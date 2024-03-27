@@ -19,7 +19,7 @@ class InferlessPythonModel:
         
         # Configure the pipeline
         self.pipe = StableDiffusionXLPipeline.from_pretrained(
-            "cagliostrolab/animagine-xl-3.0", 
+            "cagliostrolab/animagine-xl-3.1", 
             vae=self.vae,
             torch_dtype=torch.float16, 
             use_safetensors=True, 
