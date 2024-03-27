@@ -1,9 +1,5 @@
 import torch
-from diffusers import (
-    StableDiffusionXLPipeline, 
-    EulerAncestralDiscreteScheduler,
-    AutoencoderKL
-)
+from diffusers import DiffusionPipeline
 from io import BytesIO
 import base64
 import os
@@ -11,22 +7,13 @@ import os
 
 class InferlessPythonModel:
     def initialize(self):
-        # Load VAE component
-        self.vae = AutoencoderKL.from_pretrained(
-            "madebyollin/sdxl-vae-fp16-fix", 
-            torch_dtype=torch.float16
-        )
-        
         # Configure the pipeline
-        self.pipe = StableDiffusionXLPipeline.from_pretrained(
-            "cagliostrolab/animagine-xl-3.1", 
-            vae=self.vae,
-            torch_dtype=torch.float16, 
-            use_safetensors=True, 
-        )
-        self.pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(self.pipe.scheduler.config)
+        self.pipe = DiffusionPipeline.from_pretrained(
+                        "cagliostrolab/animagine-xl-3.1", 
+                        torch_dtype=torch.float16, 
+                        use_safetensors=True, 
+                    )
         self.pipe.to('cuda')
-
 
     def infer(self, inputs):
         prompt = inputs["prompt"]
